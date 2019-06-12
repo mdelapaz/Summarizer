@@ -2,6 +2,7 @@
 import random
 import math
 import nltk
+import argparse
 
 class Node:
     def __init__(self, index, text, significant_words):
@@ -83,13 +84,12 @@ def PrintSummary(graph, sentence_count):
     for s in sorted(selected_nodes, key=lambda node: node.index):
         print s.sentence
 
-def Summarize():
+def Summarize(fileToSummarize):
     nltk.download('punkt')
 
     graph = [] # list of nodes in the graph
 
-    F = open('sample.txt', 'r')
-    fileText = F.read()
+    fileText = fileToSummarize.read()
     listOfSentences = nltk.tokenize.sent_tokenize(fileText)
 
     BuildGraph(graph, listOfSentences)
@@ -101,4 +101,7 @@ def Summarize():
 
 # start of main program
 random.seed()
-Summarize()
+parser = argparse.ArgumentParser()
+parser.add_argument('fileToSummarize', type=argparse.FileType('r'))
+args = parser.parse_args()
+Summarize(args.fileToSummarize)
