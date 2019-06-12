@@ -35,6 +35,8 @@ def BuildGraph(graph, listOfSentences):
         for i in s.lower().split():
             if i not in stop_words:
                 good_words.append(i)
+        if len(good_words) < 2:
+            continue
         newNode = Node(len(graph), s, good_words)
         for n in graph:
             sim = Similarity(newNode, n)
@@ -82,7 +84,7 @@ def PrintSummary(graph, sentence_count):
             count += 1
 
     for s in sorted(selected_nodes, key=lambda node: node.index):
-        print s.sentence
+        print(s.sentence)
 
 def Summarize(fileToSummarize):
     nltk.download('punkt')
@@ -102,6 +104,6 @@ def Summarize(fileToSummarize):
 # start of main program
 random.seed()
 parser = argparse.ArgumentParser()
-parser.add_argument('fileToSummarize', type=argparse.FileType('r'))
+parser.add_argument('fileToSummarize', type=argparse.FileType('r', encoding='latin1'))
 args = parser.parse_args()
 Summarize(args.fileToSummarize)
